@@ -1,0 +1,7 @@
+<nav>
+    <div *ngIf="authService.currentUser$ | async as user">
+      Logged in as: {{ user.name }}
+    </div>
+    <button *ngIf="authService.isAdmin()" (click)="assumeRole(1)">Assume Role of User 1</button>
+  </nav>
+  
