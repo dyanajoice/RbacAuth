@@ -4,11 +4,9 @@
   <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <a class="navbar-brand" href="#">My RBAC App</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <a class="navbar-brand" href="#">Role Based AuthService</a>
+      
+        
   
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
@@ -22,26 +20,16 @@
               <a class="nav-link" routerLink="/protected-route2" routerLinkActive="active">Protected Route 2</a>
             </li>
           </ul>
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/login" routerLinkActive="active" >Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/profile" routerLinkActive="active" >Profile</a>
-            </li>
-          </ul>
         </div>
       </div>
     </nav>
   </header>
   
-  <main class="py-4">
-    <router-outlet></router-outlet>
-  </main>
+  <div class="container mt-4">
+    <router-outlet></router-outlet> 
+  </div>
   
-  <footer class="footer">
-    <div class="container">
-      <span class="text-muted">&copy; 2024 My RBAC App</span>
-    </div>
+  <footer class="footer mt-auto py-3 bg-light">
+    <!-- Footer content here -->
   </footer>
 </div>

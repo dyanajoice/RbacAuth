@@ -6,23 +6,24 @@ import { User } from '../models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
+  // Initialize currentUserSubject with null or an initial user
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor() {
-    // Example initialization (you might want to initialize with a logged-in user if available)
-    // this.currentUserSubject.next(initialUser);
-  }
+  constructor() {}
 
+  // Method to update currentUserSubject with a logged-in user
   login(user: User) {
     this.currentUserSubject.next(user);
   }
 
+  // Method to check if the current user has the 'Admin' role
   isAdmin(): boolean {
     const user = this.currentUserSubject.value;
     return user ? user.role === 'Admin' : false;
   }
 
+  // Method to assume a role (for demonstration purposes)
   assumeRole(userId: number) {
     // Logic to assume role (just for demonstration)
     const assumedUser: User = {
