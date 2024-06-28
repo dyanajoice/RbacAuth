@@ -1,4 +1,28 @@
-<div *ngFor="let user of users$ | async">
-    {{ user.name }}
+<div *ngIf="selectedUser">
+  <h2>Edit User</h2>
+  <form (submit)="saveUserChanges(selectedUser)">
+    <label>Name:</label>
+    <input type="text" [(ngModel)]="selectedUser.name" name="name" required>
+
+    <label>Email:</label>
+    <input type="email" [(ngModel)]="selectedUser.email" name="email" required>
+
+    <button type="submit">Save Changes</button>
+    <button type="button" (click)="selectedUser = null">Cancel</button>
+  </form>
+</div>
+
+<div *ngIf="error$ | async as error">
+  <p>Error: {{ error }}</p>
+</div>
+
+<div *ngIf="users$ | async as users">
+  <div *ngIf="users.length === 0">
+    <p>No users found.</p>
   </div>
-  
+  <div *ngFor="let user of users">
+    <div>{{ user.name }} ({{ user.email }})</div>
+    <button (click)="editUser(user)">Edit</button>
+    <button (click)="deleteUser(user.id)">Delete</button>
+  </div>
+</div>

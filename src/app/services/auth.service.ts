@@ -1,39 +1,73 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { User } from '../models/user.model';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { User, UserRole, UserPermission } from '../models/user.model';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // Initialize currentUserSubject with null or an initial user
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
-  currentUser$ = this.currentUserSubject.asObservable();
+  private currentUserSubject: BehaviorSubject<User>;
+  public currentUser$: Observable<User>;
 
-  constructor() {}
+  private assumedUserSubject: BehaviorSubject<User | null>;
+  public assumedUser$: Observable<User | null>;
 
-  // Method to update currentUserSubject with a logged-in user
-  login(user: User) {
-    this.currentUserSubject.next(user);
+  constructor() {
+    this.currentUserSubject = new BehaviorSubject<User>({
+      id: 1,
+      name: 'Admin User',
+      username: 'admin',
+      email: 'admin@example.com',
+      role: UserRole.Admin,
+      permissions: [
+        UserPermission.CanCreateUser,
+        UserPermission.CanReadUser,
+        UserPermission.CanUpdateUser,
+        UserPermission.CanDeleteUser,
+        UserPermission.CanViewProtectedRoute1,
+        UserPermission.CanViewProtectedRoute2,
+      ],
+    });
+    this.currentUser$ = this.currentUserSubject.asObservable();
+
+    this.assumedUserSubject = new BehaviorSubject<User | null>(null);
+    this.assumedUser$ = this.assumedUserSubject.asObservable();
   }
 
-  // Method to check if the current user has the 'Admin' role
-  isAdmin(): boolean {
-    const user = this.currentUserSubject.value;
-    return user ? user.role === 'Admin' : false;
+  isAuthenticated(): Observable<boolean> {
+    return this.currentUser$.pipe(map((user) => user !== null));
   }
 
-  // Method to assume a role (for demonstration purposes)
-  assumeRole(userId: number) {
-    // Logic to assume role (just for demonstration)
-    const assumedUser: User = {
-      id: userId,
-      username: `user${userId}`, // Example username generation
-      email: `user${userId}@gmail.com`, // Example email generation
-      name: `User ${userId}`,
-      role: 'Staff',
-      permissions: [] // Adjust permissions based on your application
-    };
-    this.currentUserSubject.next(assumedUser);
+  currentUserRole(): UserRole {
+    return this.currentUserSubject.value?.role;
+  }
+
+  hasPermission(permission: UserPermission): boolean {
+    const user = this.assumedUserSubject.value || this.currentUserSubject.value;
+    if (!user) {
+      return false; // Handle case where user is not defined
+    }
+  
+    if (user.role === UserRole.Admin) {
+      return true; // Admin has all permissions
+    } else if (user.role === UserRole.Staff) {
+      // Check if permissions array is defined and includes the permission
+      return user.permissions !== undefined && user.permissions.includes(permission);
+    }
+  
+    return false;
+  }
+
+  assumeUserRole(user: User): void {
+    this.assumedUserSubject.next(user);
+  }
+
+  clearAssumedUserRole(): void {
+    this.assumedUserSubject.next(null);
+  }
+
+  getAssumedUser(): Observable<User | null> {
+    return this.assumedUser$;
   }
 }

@@ -1,7 +1,7 @@
-
-
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './services/auth.service';
+import { Store } from '@ngrx/store';
+import { loadUsers } from './store/actions/user.actions';
+import { AppState } from './store/app.state';
 
 @Component({
   selector: 'app-root',
@@ -9,18 +9,12 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-isLoggedIn() {
-throw new Error('Method not implemented.');
-}
-  constructor(private authService: AuthService) {}
+  title = 'rbac-app';
+
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
-    // Initialize any global setup or state here
-    // Example: Subscribe to authentication state changes
-    this.authService.currentUser$.subscribe(user => {
-      // Handle user authentication changes
-      console.log('Current user:', user);
-    });
+    // Load initial user data from the API
+    this.store.dispatch(loadUsers());
   }
 }
-

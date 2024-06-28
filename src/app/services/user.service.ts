@@ -1,7 +1,7 @@
+// src/app/services/user.service.ts
 import { Injectable } from '@angular/core';
-import axios from 'axios';
-import { Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -10,13 +10,23 @@ import { User } from '../models/user.model';
 export class UserService {
   private apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
-  fetchUsers(): Observable<User[]> {
-    return from(axios.get<User[]>(this.apiUrl)).pipe(
-      map(response => response.data.map(user => ({
-        ...user,
-        role: Math.random() > 0.5 ? 'Admin' : 'Staff',
-        permissions: []
-      })))
-    );
+  constructor(private http: HttpClient) {}
+
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.apiUrl);
+  }
+
+  addUser(user: User): Observable<User> {
+    return this.http.post<User>(this.apiUrl, user);
+  }
+
+  updateUser(user: User): Observable<User> {
+    const url = `${this.apiUrl}/${user.id}`;
+    return this.http.put<User>(url, user);
+  }
+
+  deleteUser(userId: number): Observable<any> {
+    const url = `${this.apiUrl}/${userId}`;
+    return this.http.delete(url);
   }
 }

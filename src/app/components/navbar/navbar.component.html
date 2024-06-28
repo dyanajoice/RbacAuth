@@ -1,7 +1,22 @@
-<nav>
-    <div *ngIf="authService.currentUser$ | async as user">
-      Logged in as: {{ user.name }}
-    </div>
-    <button *ngIf="authService.isAdmin()" (click)="assumeRole(1)">Assume Role of User 1</button>
-  </nav>
-  
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">RBAC App</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/users">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/protected-route1">Protected Route 1</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/protected-route2">Protected Route 2</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <select class="custom-select mr-sm-2" (change)="onAssumeRole($event)">
+        <option *ngFor="let user of (users$ | async)" [ngValue]="user">{{ user.name }}</option>
+      </select>
+      <button class="btn btn-outline-danger my-2 my-sm-0" (click)="onClearAssumedRole()">Clear Assumed Role</button>
+    </form>
+  </div>
+</nav>

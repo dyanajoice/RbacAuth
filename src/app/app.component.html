@@ -1,35 +1,4 @@
-<!-- app.component.html -->
-
-<div class="app-container">
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container">
-        <a class="navbar-brand" href="#">Role Based AuthService</a>
-      
-        
-  
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/protected-route1" routerLinkActive="active">Protected Route 1</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/protected-route2" routerLinkActive="active">Protected Route 2</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
-  
-  <div class="container mt-4">
-    <router-outlet></router-outlet> 
-  </div>
-  
-  <footer class="footer mt-auto py-3 bg-light">
-    <!-- Footer content here -->
-  </footer>
+<app-navbar></app-navbar>
+<div class="container mt-4">
+  <router-outlet></router-outlet>
 </div>

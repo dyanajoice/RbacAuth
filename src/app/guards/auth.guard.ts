@@ -3,7 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
-import { User } from '../models/user.model';
+import { UserPermission } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +22,13 @@ export class AuthGuard implements CanActivate {
 
         const url = state.url;
         if (url.includes('protected-route1')) {
-          return user.permissions.includes('CanViewProtectedRoute1');
+          // Check if user permissions include CanViewProtectedRoute1
+          return user.permissions !== undefined && user.permissions.includes(UserPermission.CanViewProtectedRoute1);
         }
 
         if (url.includes('protected-route2')) {
-          return user.permissions.includes('CanViewProtectedRoute2');
+          // Check if user permissions include CanViewProtectedRoute2
+          return user.permissions !== undefined && user.permissions.includes(UserPermission.CanViewProtectedRoute2);
         }
 
         // Default to true for unrestricted routes

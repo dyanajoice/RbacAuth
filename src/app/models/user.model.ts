@@ -1,13 +1,22 @@
+export enum UserRole {
+  Admin = 'Admin',
+  Staff = 'Staff',
+}
 
-  // src/app/models/user.model.ts
+export enum UserPermission {
+  CanCreateUser = 'CanCreateUser',
+  CanReadUser = 'CanReadUser',
+  CanUpdateUser = 'CanUpdateUser',
+  CanDeleteUser = 'CanDeleteUser',
+  CanViewProtectedRoute1 = 'CanViewProtectedRoute1',
+  CanViewProtectedRoute2 = 'CanViewProtectedRoute2',
+}
 
 export interface User {
-    id: number;
-    username: string;
-    email: string;
-    name: string;
-    role: string;
-    permissions: string[]; // Adjust permissions type as per your application
-  }
-  
-  
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  role: UserRole;
+  permissions?: UserPermission[];
+}

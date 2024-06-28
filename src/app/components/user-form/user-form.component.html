@@ -1,0 +1,6 @@
+<form (submit)="onSubmit()">
+    <input type="text" [(ngModel)]="user.name" placeholder="Name" required>
+    <input type="email" [(ngModel)]="user.email" placeholder="Email" required>
+    <button type="submit">Add User</button>
+  </form>
+  

@@ -2,24 +2,43 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from '../../models/user.model';
-import { AppState } from '../../store/app.state';
-import { loadUsers } from '../../store/actions/user.actions';
-import { selectAllUsers } from '../../store/selectors/user.selectors';
+import * as fromUser from '../../store/reducers/user.reducer'; // Adjust import based on your project structure
+import * as UserActions from '../../store/actions/user.actions';
+import * as UserSelectors from '../../store/selectors/user.selectors';
+
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-user',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  users$: Observable<User[]>; // Ensure Observable<User[]> is imported from 'rxjs'
+  users$: Observable<User[]> | undefined;
+  error$: Observable<string | null> | undefined;
+  selectedUser: User | null | undefined; 
+  constructor(private store: Store<fromUser.UserState>) {}
 
-  constructor(private store: Store<AppState>) {
-    this.users$ = new Observable<User[]>(); // Initialize users$ with an empty observable
+  ngOnInit(): void {
+    this.users$ = this.store.select(UserSelectors.selectAllUsers);
+    this.error$ = this.store.select(UserSelectors.selectUserError);
+
+    // Optionally, dispatch an action to load users if needed
+    this.store.dispatch(UserActions.loadUsers());
+  }
+  addUser(user: User) {
+    this.store.dispatch(UserActions.addUser({ user }));
   }
 
-  ngOnInit() {
-    this.store.dispatch(loadUsers());
-    this.users$ = this.store.select(selectAllUsers); // Assign the selected users to users$
+  editUser(user: User) {
+    this.selectedUser = { ...user }; // Create a copy of user for editing
+  }
+
+  saveUserChanges(updatedUser: User) {
+    this.store.dispatch(UserActions.updateUser({ user: updatedUser }));
+    this.selectedUser = null; // Clear selected user after update
+  }
+
+  deleteUser(userId: number) {
+    this.store.dispatch(UserActions.deleteUser({ userId }));
   }
 }
