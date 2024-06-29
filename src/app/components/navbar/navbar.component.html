@@ -1,10 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">RBAC App</a>
+ 
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a *ngIf="canCreateUser()" class="nav-link" (click)="onAssumeRoleToggle()">Assume Role</a>
-      </li>
+     
       <li class="nav-item">
         <a class="nav-link" routerLink="/users">Users</a>
       </li>
@@ -15,8 +13,24 @@
         <a class="nav-link" routerLink="/protected-route2">Protected Route 2</a>
       </li>
       <li class="nav-item">
+        <a *ngIf="canCreateUser()" class="nav-link" (click)="onAssumeRoleToggle()">Assume Role</a>
+      </li>
+      <li class="nav-item">
         <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
       </li>
     </ul>
   </div>
+  <div *ngIf="showAssumeRole" class="assume-role-dropdown">
+  <ul>
+    <li *ngFor="let user of users$ | async" (click)="onAssumeRole(user)">
+      {{ user.name }}
+    </li>
+  </ul>
+</div>
+
+<!-- Role assumption notification -->
+<div *ngIf="roleAssumptionNotification" class="notification">
+  {{ roleAssumptionNotification }}
+  <button (click)="onClearAssumedRole()">Clear</button>
+</div>
 </nav>
