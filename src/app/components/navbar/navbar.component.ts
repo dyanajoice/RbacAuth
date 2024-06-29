@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { User } from '../../models/user.model';
+import { User, UserPermission } from '../../models/user.model';
 import { selectAllUsers, selectUserError } from '../../store/selectors/user.selectors';
 import { UserState } from '../../store/reducers/user.reducer';
 import * as UserActions from '../../store/actions/user.actions'; // Import user actions
@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
   showAssumeRole: boolean = false;
   roleAssumptionNotification: string | null = null;
 
-  constructor(private store: Store<UserState>,private authService: AuthService, private router: Router) {
+  constructor(private store: Store<UserState>,private authService: AuthService,private router: Router) {
     this.users$ = this.store.pipe(select(selectAllUsers));
     this.error$ = this.store.pipe(select(selectUserError));
   }
@@ -28,7 +28,9 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(UserActions.loadUsers()); // Dispatch action to load users on component initialization
   }
-
+  canCreateUser(): boolean {
+    return this.authService.hasPermission(UserPermission.CanCreateUser);
+  }
   onAssumeRoleToggle() {
     this.showAssumeRole = !this.showAssumeRole;
   }

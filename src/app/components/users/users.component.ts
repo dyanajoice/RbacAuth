@@ -42,7 +42,7 @@ export class UsersComponent implements OnInit, OnDestroy  {
       bs: ''
     },
     username: '',
-    role: UserRole.Admin, // Set role to 'Admin' by default
+    role: UserRole.Staff, // Set role to 'Admin' by default
   };
   
   private errorSubscription: Subscription | undefined;
@@ -50,9 +50,13 @@ export class UsersComponent implements OnInit, OnDestroy  {
   constructor(private store: Store<fromUser.UserState>,private authService: AuthService) {}
 
   ngOnInit(): void {
- 
-
-    // Optionally, dispatch an action to load users if needed
+    
+     this.canCreateUser();
+     this.canUpdateUser();
+     this.canReadUser();
+     this.canViewProtectedRoute1();
+     this.canViewProtectedRoute2();
+       // Optionally, dispatch an action to load users if needed
     this.store.dispatch(UserActions.loadUsers());
     this.users$ = this.store.select(UserSelectors.selectAllUsers);
     this.error$ = this.store.select(UserSelectors.selectUserError);

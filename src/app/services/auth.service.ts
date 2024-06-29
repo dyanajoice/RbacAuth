@@ -44,7 +44,6 @@ export class AuthService {
       password: 'password2',
       role: UserRole.Staff,
       permissions: [
-        UserPermission.CanReadUser,
         UserPermission.CanViewProtectedRoute2
       ],
       email: '',
