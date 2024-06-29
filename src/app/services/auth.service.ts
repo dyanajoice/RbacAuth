@@ -15,7 +15,7 @@ export class AuthService {
     {
       id: 1,
       name: 'John Doe',
-      username: 'johndoe',
+      username: 'admin',
       password: 'password1',
       role: UserRole.Admin,
       email: '',
@@ -40,7 +40,7 @@ export class AuthService {
     {
       id: 2,
       name: 'Jane Smith',
-      username: 'janesmith',
+      username: 'staff',
       password: 'password2',
       role: UserRole.Staff,
       permissions: [
