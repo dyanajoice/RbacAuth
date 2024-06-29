@@ -1,6 +1,59 @@
 <form (submit)="onSubmit()">
-    <input type="text" [(ngModel)]="user.name" placeholder="Name" required>
-    <input type="email" [(ngModel)]="user.email" placeholder="Email" required>
-    <button type="submit">Add User</button>
-  </form>
-  
+  <div>
+    <label for="name">Name</label>
+       <input type="text" [(ngModel)]="user?.name" name="name" required>
+  </div>
+  <div>
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" [(ngModel)]="user.email" required>
+  </div>
+  <div>
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" [(ngModel)]="user.username" required>
+  </div>
+  <div>
+    <label for="phone">Phone</label>
+    <input type="text" id="phone" name="phone" [(ngModel)]="user.phone" required>
+  </div>
+  <div>
+    <label for="street">Street</label>
+    <input type="text" id="street" name="street" [(ngModel)]="user.address.street" required>
+  </div>
+  <div>
+    <label for="suite">Suite</label>
+    <input type="text" id="suite" name="suite" [(ngModel)]="user.address.suite" required>
+  </div>
+  <div>
+    <label for="city">City</label>
+    <input type="text" id="city" name="city" [(ngModel)]="user.address.city" required>
+  </div>
+  <div>
+    <label for="zipcode">Zip Code</label>
+    <input type="text" id="zipcode" name="zipcode" [(ngModel)]="user.address.zipcode" required>
+  </div>
+  <div>
+    <label for="lat">Latitude</label>
+    <input type="text" id="lat" name="lat" [(ngModel)]="user.address.geo.lat" required>
+  </div>
+  <div>
+    <label for="lng">Longitude</label>
+    <input type="text" id="lng" name="lng" [(ngModel)]="user.address.geo.lng" required>
+  </div>
+  <div>
+    <label for="website">Website</label>
+    <input type="text" id="website" name="website" [(ngModel)]="user.website" required>
+  </div>
+  <div>
+    <label for="companyName">Company Name</label>
+    <input type="text" id="companyName" name="companyName" [(ngModel)]="user.company.name" required>
+  </div>
+  <div>
+    <label for="catchPhrase">Catch Phrase</label>
+    <input type="text" id="catchPhrase" name="catchPhrase" [(ngModel)]="user.company.catchPhrase" required>
+  </div>
+  <div>
+    <label for="bs">Business Strategy</label>
+    <input type="text" id="bs" name="bs" [(ngModel)]="user.company.bs" required>
+  </div>
+  <button type="submit">Add User</button>
+</form>

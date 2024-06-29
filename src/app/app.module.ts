@@ -21,6 +21,7 @@ import { AuthEffects } from './store/effects/auth.effects';
 import { AppRoutingModule } from './app-routing.module';
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { environment } from 'src/environments/environment';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -35,8 +36,8 @@ import { environment } from 'src/environments/environment';
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    CommonModule,
     AppRoutingModule,
-    StoreModule.forRoot({}, {}),
     StoreModule.forRoot({ users: userReducer, auth: authReducer }),
     EffectsModule.forRoot([]),
     EffectsModule.forFeature([UserEffects,AuthEffects]),

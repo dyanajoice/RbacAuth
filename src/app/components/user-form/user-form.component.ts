@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { User, UserRole } from '../../models/user.model';
 
 @Component({
@@ -7,18 +7,60 @@ import { User, UserRole } from '../../models/user.model';
   styleUrls: ['./user-form.component.css']
 })
 export class UserFormComponent {
-  @Output() addUser = new EventEmitter<User>();
-
-  user: User = {
+  @Input() user: User | null = {
     id: 0,
     name: '',
     email: '',
-    username: '', // Add username property
-    role: UserRole.Admin  // Set role to 'Admin' by default
-  };
+    address: {
+      street: '',
+      suite: '',
+      city: '',
+      zipcode: '',
+      geo: {
+        lat: '',
+        lng: ''
+      }
+    },
+    phone: '',
+    website: '',
+    company: {
+      name: '',
+      catchPhrase: '',
+      bs: ''
+    },
+    username: '',
+    role: UserRole.Admin
+  }; // Initialize with default empty User object
+
+  @Output() addUser = new EventEmitter<User>();
 
   onSubmit() {
-    this.addUser.emit(this.user);
-    this.user = { id: 0, name: '', email: '', username: '', role:  UserRole.Admin }; // Reset form
+    if (this.user) {
+      this.addUser.emit(this.user);
+      this.user = { // Reset the form to an empty User object after submission
+        id: 0,
+        name: '',
+        email: '',
+        address: {
+          street: '',
+          suite: '',
+          city: '',
+          zipcode: '',
+          geo: {
+            lat: '',
+            lng: ''
+          }
+        },
+        phone: '',
+        website: '',
+        company: {
+          name: '',
+          catchPhrase: '',
+          bs: ''
+        },
+        username: '',
+        role: UserRole.Admin
+      };
+    }
   }
 }

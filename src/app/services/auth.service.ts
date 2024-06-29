@@ -7,29 +7,16 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser$: Observable<User>;
+  private currentUserSubject: BehaviorSubject<User| null>;
+  public currentUser$: Observable<User| null>;
 
   private assumedUserSubject: BehaviorSubject<User | null>;
   public assumedUser$: Observable<User | null>;
 
   constructor() {
-    this.currentUserSubject = new BehaviorSubject<User>({
-      id: 1,
-      name: 'Admin User',
-      username: 'admin',
-      email: 'admin@example.com',
-      role: UserRole.Admin,
-      permissions: [
-        UserPermission.CanCreateUser,
-        UserPermission.CanReadUser,
-        UserPermission.CanUpdateUser,
-        UserPermission.CanDeleteUser,
-        UserPermission.CanViewProtectedRoute1,
-        UserPermission.CanViewProtectedRoute2,
-      ],
-    });
+    this.currentUserSubject = new BehaviorSubject<User | null>(null);
     this.currentUser$ = this.currentUserSubject.asObservable();
+    
 
     this.assumedUserSubject = new BehaviorSubject<User | null>(null);
     this.assumedUser$ = this.assumedUserSubject.asObservable();
@@ -39,7 +26,7 @@ export class AuthService {
     return this.currentUser$.pipe(map((user) => user !== null));
   }
 
-  currentUserRole(): UserRole {
+  currentUserRole(): UserRole | undefined {
     return this.currentUserSubject.value?.role;
   }
 

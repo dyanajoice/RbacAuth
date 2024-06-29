@@ -14,6 +14,8 @@ import * as UserActions from '../../store/actions/user.actions'; // Import user 
 export class NavbarComponent implements OnInit {
   users$: Observable<User[]>;
   error$: Observable<string | null>;
+  showAssumeRole: boolean = false;
+  roleAssumptionNotification: string | null = null;
 
   constructor(private store: Store<UserState>) {
     this.users$ = this.store.pipe(select(selectAllUsers));
@@ -24,21 +26,27 @@ export class NavbarComponent implements OnInit {
     this.store.dispatch(UserActions.loadUsers()); // Dispatch action to load users on component initialization
   }
 
-  onAssumeRole(event: any) {
-    const selectedUserId = event.target.value; // Assuming you get user ID from the event
-
-    this.users$.subscribe(users => {
-      const selectedUser = users.find(user => user.id === selectedUserId);
-
-      if (selectedUser) {
-        // Dispatch an action to assume role based on selected user
-        this.store.dispatch(UserActions.assumeRole({ user: selectedUser }));
-      }
-    });
+  onAssumeRoleToggle() {
+    this.showAssumeRole = !this.showAssumeRole;
   }
 
+  onAssumeRole(user: User) {
+    // Dispatch an action to assume role based on selected user
+    this.store.dispatch(UserActions.assumeRole({ user }));
+
+    // Update notification
+    this.roleAssumptionNotification = `Admin has assumed the role of ${user.name}`;
+
+    // Hide role assumption dropdown after assumption
+    this.showAssumeRole = false;
+  }
+ 
+  
   onClearAssumedRole() {
     // Dispatch an action to clear assumed role
     this.store.dispatch(UserActions.clearAssumedRole());
+
+    // Clear notification
+    this.roleAssumptionNotification = null;
   }
 }

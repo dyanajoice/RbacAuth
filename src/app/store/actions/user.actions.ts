@@ -15,11 +15,12 @@ export const updateUser = createAction('[User] Update User', props<{ user: User 
 
 // Delete a user
 export const deleteUser = createAction('[User] Delete User', props<{ userId: number }>());
-export function assumeRole(arg0: { user: User; }): any {
-  throw new Error('Function not implemented.');
-}
+export const assumeRole = createAction(
+  '[User] Assume Role',
+  props<{ user: User }>()
+);
 
-export function clearAssumedRole(): any {
-  throw new Error('Function not implemented.');
-}
-
+// Clear Assumed Role
+export const clearAssumedRole = createAction(
+  '[User] Clear Assumed Role'
+);

@@ -1,28 +1,61 @@
-<div *ngIf="selectedUser">
-  <h2>Edit User</h2>
-  <form (submit)="saveUserChanges(selectedUser)">
-    <label>Name:</label>
-    <input type="text" [(ngModel)]="selectedUser.name" name="name" required>
+<div class="container">
+  <button class="btn btn-primary btn-create-user" (click)="showUserForm = true; selectedUser = null">New User</button>
 
-    <label>Email:</label>
-    <input type="email" [(ngModel)]="selectedUser.email" name="email" required>
-
-    <button type="submit">Save Changes</button>
-    <button type="button" (click)="selectedUser = null">Cancel</button>
-  </form>
-</div>
-
-<div *ngIf="error$ | async as error">
-  <p>Error: {{ error }}</p>
-</div>
-
-<div *ngIf="users$ | async as users">
-  <div *ngIf="users.length === 0">
-    <p>No users found.</p>
+  <!-- User Form Modal -->
+  <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show': showUserForm}" *ngIf="showUserForm">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ selectedUser ? 'Edit User' : 'Create New User' }}</h5>
+          <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-user-form [user]="selectedUser" (addUser)="onAddUser($event); closeModal()" (cancel)="closeModal()"></app-user-form>
+        </div>
+      </div>
+    </div>
   </div>
-  <div *ngFor="let user of users">
-    <div>{{ user.name }} ({{ user.email }})</div>
-    <button (click)="editUser(user)">Edit</button>
-    <button (click)="deleteUser(user.id)">Delete</button>
-  </div>
+
+  <table class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Username</th>
+        <th>Phone</th>
+        <th>Street</th>
+        <th>Suite</th>
+        <th>City</th>
+        <th>Zip Code</th>
+        <th>Website</th>
+        <th>Company Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users$ | async">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.address.street }}</td>
+        <td>{{ user.address.suite }}</td>
+        <td>{{ user.address.city }}</td>
+        <td>{{ user.address.zipcode }}</td>
+        <td>{{ user.website }}</td>
+        <td>{{ user.company.name }}</td>
+        <td class="actions-column">
+          <button class="btn btn-sm btn-warning" (click)="editUser(user)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Delete</button>
+        </td>
+      </tr>
+      <tr *ngIf="!(users$ | async)?.length">
+        <td colspan="12" class="text-center">No users found.</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

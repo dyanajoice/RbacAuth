@@ -1,0 +1,45 @@
+/* app.component.css */
+
+/* Global Reset or Normalize */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Global Fonts */
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  /* Main App Layout */
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure app takes full height of viewport */
+  }
+  
+  .main-content {
+    flex: 1; /* Allow main content area to grow and fill remaining space */
+    padding: 20px;
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .app-container {
+      flex-direction: column; /* Stack components vertically on smaller screens */
+    }
+  
+    .main-content {
+      padding: 10px;
+    }
+  }
+  
