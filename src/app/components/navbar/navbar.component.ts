@@ -5,6 +5,8 @@ import { User } from '../../models/user.model';
 import { selectAllUsers, selectUserError } from '../../store/selectors/user.selectors';
 import { UserState } from '../../store/reducers/user.reducer';
 import * as UserActions from '../../store/actions/user.actions'; // Import user actions
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -12,12 +14,13 @@ import * as UserActions from '../../store/actions/user.actions'; // Import user 
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  
   users$: Observable<User[]>;
   error$: Observable<string | null>;
   showAssumeRole: boolean = false;
   roleAssumptionNotification: string | null = null;
 
-  constructor(private store: Store<UserState>) {
+  constructor(private store: Store<UserState>,private authService: AuthService, private router: Router) {
     this.users$ = this.store.pipe(select(selectAllUsers));
     this.error$ = this.store.pipe(select(selectUserError));
   }
@@ -41,7 +44,11 @@ export class NavbarComponent implements OnInit {
     this.showAssumeRole = false;
   }
  
-  
+  logout(): void {
+    this.authService.setCurrentUser(null); // Clear the current user in AuthService
+    this.router.navigate(['/login']); // Navigate to the login page
+  }
+
   onClearAssumedRole() {
     // Dispatch an action to clear assumed role
     this.store.dispatch(UserActions.clearAssumedRole());

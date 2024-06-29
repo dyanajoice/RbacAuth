@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { User, UserRole } from '../../models/user.model';
+import { User, UserPermission, UserRole } from '../../models/user.model';
 import * as fromUser from '../../store/reducers/user.reducer'; // Adjust import based on your project structure
 import * as UserActions from '../../store/actions/user.actions';
 import * as UserSelectors from '../../store/selectors/user.selectors';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class UsersComponent implements OnInit, OnDestroy  {
   selectedUser: User | null = {
     id: 0,
     name: '',
+    password: '',
     email: '',
     address: {
       street: '',
@@ -45,7 +47,7 @@ export class UsersComponent implements OnInit, OnDestroy  {
   
   private errorSubscription: Subscription | undefined;
 
-  constructor(private store: Store<fromUser.UserState>) {}
+  constructor(private store: Store<fromUser.UserState>,private authService: AuthService) {}
 
   ngOnInit(): void {
  
@@ -74,7 +76,29 @@ export class UsersComponent implements OnInit, OnDestroy  {
     this.selectedUser = { ...user }; 
     this.showUserForm = true; // Create a copy of user for editing
   }
+  canCreateUser(): boolean {
+    return this.authService.hasPermission(UserPermission.CanCreateUser);
+  }
 
+  canReadUser(): boolean {
+    return this.authService.hasPermission(UserPermission.CanReadUser);
+  }
+
+  canUpdateUser(): boolean {
+    return this.authService.hasPermission(UserPermission.CanUpdateUser);
+  }
+
+  canDeleteUser(): boolean {
+    return this.authService.hasPermission(UserPermission.CanDeleteUser);
+  }
+
+  canViewProtectedRoute1(): boolean {
+    return this.authService.hasPermission(UserPermission.CanViewProtectedRoute1);
+  }
+
+  canViewProtectedRoute2(): boolean {
+    return this.authService.hasPermission(UserPermission.CanViewProtectedRoute2);
+  }
   closeModal() {
     this.showUserForm = false; // Close the modal form
   }
@@ -87,4 +111,8 @@ export class UsersComponent implements OnInit, OnDestroy  {
   deleteUser(userId: number) {
     this.store.dispatch(UserActions.deleteUser({ userId }));
   }
+
 }
+
+
+

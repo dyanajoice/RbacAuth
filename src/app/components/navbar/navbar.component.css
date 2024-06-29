@@ -11,7 +11,26 @@ nav {
     padding: 0;
     margin: 0;
   }
+  .navbar-nav.ml-auto {
+    margin-left: auto;
+  }
   
+  .logout-container {
+    margin-left: auto;
+  }
+  /* Styling for the logout button */
+  .logout-button {
+    border: 1px solid #dc3545; /* Outline color for logout button */
+    color: #dc3545; /* Text color for logout button */
+    background-color: transparent; /* Transparent background */
+    padding: 5px 10px; /* Adjust padding */
+    border-radius: 5px; /* Optional: Rounded corners */
+  }
+  
+  .logout-button:hover {
+    background-color: #dc3545; /* Red background on hover */
+    color: white; /* White text on hover */
+  }
   nav ul li {
     display: inline-block;
     margin-right: 10px;

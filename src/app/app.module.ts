@@ -22,6 +22,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { environment } from 'src/environments/environment';
 import { CommonModule } from '@angular/common';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { CommonModule } from '@angular/common';
     UsersComponent,
     ProtectedRoute1Component,
     ProtectedRoute2Component,
-    UserFormComponent
+    UserFormComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

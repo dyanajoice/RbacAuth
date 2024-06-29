@@ -10,6 +10,7 @@ export class UserFormComponent {
   @Input() user: User | null = {
     id: 0,
     name: '',
+    password: '',
     email: '',
     address: {
       street: '',
@@ -40,6 +41,7 @@ export class UserFormComponent {
       this.user = { // Reset the form to an empty User object after submission
         id: 0,
         name: '',
+        password: '',
         email: '',
         address: {
           street: '',

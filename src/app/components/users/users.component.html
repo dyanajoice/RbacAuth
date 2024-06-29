@@ -1,5 +1,7 @@
+<app-navbar></app-navbar>
 <div class="container">
-  <button class="btn btn-primary btn-create-user" (click)="showUserForm = true; selectedUser = null">New User</button>
+  <!-- New User Button (only visible if user can create users) -->
+  <button *ngIf="canCreateUser" class="btn btn-primary btn-create-user" (click)="showUserForm = true; selectedUser = null">New User</button>
 
   <!-- User Form Modal -->
   <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show': showUserForm}" *ngIf="showUserForm">
@@ -18,6 +20,7 @@
     </div>
   </div>
 
+  <!-- User Table -->
   <table class="table table-striped mt-3">
     <thead>
       <tr>
@@ -49,11 +52,15 @@
         <td>{{ user.website }}</td>
         <td>{{ user.company.name }}</td>
         <td class="actions-column">
-          <button class="btn btn-sm btn-warning" (click)="editUser(user)">Edit</button>
-          <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Delete</button>
+          <!-- Edit Button (only visible if user can edit users) -->
+          <button *ngIf="canUpdateUser || canCreateUser" class="btn btn-sm btn-warning" (click)="editUser(user)">Edit</button>
+          
+          <!-- Delete Button (only visible if user can delete users) -->
+          <button *ngIf="canDeleteUser || canCreateUser" class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Delete</button>
         </td>
       </tr>
-      <tr *ngIf="!(users$ | async)?.length">
+      <!-- Display message when no users are available -->
+      <tr *ngIf="(users$ | async)?.length === 0">
         <td colspan="12" class="text-center">No users found.</td>
       </tr>
     </tbody>

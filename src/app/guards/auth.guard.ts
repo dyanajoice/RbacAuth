@@ -1,38 +1,48 @@
+// auth.guard.ts
+
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
-import { UserPermission } from '../models/user.model';
+import { map } from 'rxjs/operators';
+import { UserRole } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
-    return this.authService.currentUser$.pipe(
-      take(1), // Take only one emission to get the current user
-      map(user => {
-        if (!user) {
-          // Redirect to login or any other route if user is not authenticated
-          return this.router.createUrlTree(['/login']);
-        }
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return this.authService.isAuthenticated().pipe(
+      map(isAuthenticated => {
+        if (isAuthenticated) {
+          const userRole = this.authService.getCurrentUser()?.role;
 
-        const url = state.url;
-        if (url.includes('protected-route1')) {
-          // Check if user permissions include CanViewProtectedRoute1
-          return user.permissions !== undefined && user.permissions.includes(UserPermission.CanViewProtectedRoute1);
-        }
+          // Ensure userRole is defined before checking against required roles
+          if (!userRole) {
+            // Handle case where user role is undefined
+            this.router.navigate(['/login']);
+            return false;
+          }
 
-        if (url.includes('protected-route2')) {
-          // Check if user permissions include CanViewProtectedRoute2
-          return user.permissions !== undefined && user.permissions.includes(UserPermission.CanViewProtectedRoute2);
-        }
+          // Check if the route requires specific roles
+          const requiredRoles = next.data.roles as UserRole[];
+          if (requiredRoles && requiredRoles.length > 0 && !requiredRoles.includes(userRole)) {
+            // Redirect to unauthorized page or handle unauthorized access
+            this.router.navigate(['/unauthorized']);
+            return false;
+          }
 
-        // Default to true for unrestricted routes
-        return true;
+          return true; // User is authenticated and has required role
+        } else {
+          this.router.navigate(['/login']);
+          return false; // User is not authenticated
+        }
       })
     );
   }
