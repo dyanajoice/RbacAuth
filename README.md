@@ -1,6 +1,19 @@
-# RbacApp1
+# RbacApp
+This application will have a login page and has  two users 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.18.
+1. Username: admin
+Password: password1 (role: Admin)
+
+2. Username: staff
+Password: password2 (role: Staff)
+
+Functionality:
+
+Admin can perform all CRUD operations and navigate to all other routes (protected 1 and protected 2)
+AssumeRole for each User.
+
+Staff can only view the UserList and view the other two routes(protected 1 and protected 2)
+
 
 ## Development server
 
